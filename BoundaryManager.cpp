@@ -15,7 +15,7 @@ BoundaryManager::BoundaryManager(const char* filename)
 	
 	Condition condition;
 	
-	for (uint i=0;!input.eof();++i)
+	for (uint i=1;!input.eof();++i)
 	{
 		getline(input, line);
 		if (line[0] != '%' and line.size() != 0)
