@@ -13,7 +13,7 @@ double scalaire(const Vector* v1, const Vector* v2)
 
 double norm(const Vector* v)
 {
-	return sqrt(square(v->x) + square(v->y));
+	return sqrt(square(v->x) + square(v->y) + square(v->z));
 }
 
 void set_point(Point* p, double x, double y, double z)
@@ -23,9 +23,9 @@ void set_point(Point* p, double x, double y, double z)
 	p->z = z;
 }
 
-double d(Point p1, Point p2)
+double d(const Point* p1, const Point* p2)
 {
-	return sqrt(square(p1.x - p2.x) + square(p1.y - p2.y) + square(p1.z - p2.z));
+	return sqrt(square(p1->x - p2->x) + square(p1->y - p2->y) + square(p1->z - p2->z));
 }
 
 Point Point_add(const Point* p1, const Point* p2)

@@ -26,7 +26,7 @@ BoundaryManager::BoundaryManager(const char* filename)
 			}
 			else
 			{
-				if (strcmp(boundary_type, "DPHI_DN"))
+				if (strcmp(boundary_type, "DPHI_DN") == 0)
 				{
 					condition.type = NEUMANN;
 				}

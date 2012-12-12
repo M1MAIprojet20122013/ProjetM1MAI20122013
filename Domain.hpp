@@ -11,6 +11,7 @@
 #include "Point.h"
 #include "Mesh.hpp"
 #include "Condition.h"
+#include "BoundaryManager.hpp"
 
 class Domain
 {
@@ -18,7 +19,7 @@ public:
 	typedef std::vector<Point>::const_iterator const_point_iterator;
 	typedef std::vector<Mesh*>::const_iterator const_mesh_iterator;
 	
-	Domain(const char* filename); // charge le domaine depuis un .mesh
+	Domain(const char* filename, BoundaryManager& boundary_manager); // charge le domaine depuis un .mesh
 	~Domain();
 	
 	uint get_mesh_count();

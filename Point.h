@@ -24,7 +24,7 @@ struct s_Point
 Point new_point(double x, double y, double z);
 
 void set_point(Point* p, double x, double y, double z);
-double d(Point p1, Point p2);
+double d(const Point* p1, const Point* p2);
 
 double scalaire(const Vector* v1, const Vector* v2);
 double norm(const Vector* v);

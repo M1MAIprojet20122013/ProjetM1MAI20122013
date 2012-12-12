@@ -55,9 +55,10 @@ void plot(const Point* points, uint length, const char* options)
 		++plot_id;
 	}
 }
+
 void plot_vector( const Point p1, const Point p2, const Vector normal, const char* options)
 {
-		char filename[15];
+	char filename[15];
 	sprintf(filename, "/tmp/plot-%i", plot_id);
 	FILE* f = fopen(filename, "w");
 	if (f == NULL)

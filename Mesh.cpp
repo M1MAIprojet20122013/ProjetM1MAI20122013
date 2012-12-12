@@ -1,9 +1,20 @@
 #include "Mesh.hpp"
-Mesh::Mesh(const Point* point_1, const Point* point_2) : p1(point_1), p2(point_2) 
+Mesh::Mesh(const Point* point_1, const Point* point_2, const Condition& condition) : p1(point_1), p2(point_2) 
 {
 	this->load_center();
 	this->load_normal();
-	setCondition();
+	
+	this->dirichlet_cond = NULL;
+	this->neumann_cond = NULL;
+	
+	if (condition.type == NEUMANN)
+	{
+		this->neumann_cond = new double(condition.value);
+	}
+	else if (condition.type == DIRICHLET)
+	{
+		this->dirichlet_cond = new double(condition.value);
+	}
 }
 
 Mesh::~Mesh()
@@ -76,23 +87,4 @@ void Mesh::load_normal()
 	double norm_p1p2 = norm(&p1p2);
 	this->normal.x = (this->p2->y - this->p1->y) / norm_p1p2;
 	this->normal.y = -(this->p2->x - this->p1->x) / norm_p1p2;
-}
-
-void Mesh::setCondition(){
-	if (p1->x == 0 && p2->x == 0) {
-		dirichlet_cond = new double(100.0);
-		neumann_cond =  NULL;
-	}
-	if  (p1->x == 1 && p2->x == 1){
-		dirichlet_cond =  new double(101.0);
-		neumann_cond =  NULL;
-	}
-	if (p1->y == 0 && p2->y == 0) {
-		neumann_cond =  new double(0);
-		dirichlet_cond = NULL;
-	}
-	if  (p1->y == 1 && p2->y == 1){
-		neumann_cond =  new double(0);
-		dirichlet_cond = NULL;
-	}
 }

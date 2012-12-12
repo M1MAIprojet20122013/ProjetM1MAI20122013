@@ -1,7 +1,7 @@
 #include "./Domain.hpp"
 #include <iostream>
 
-Domain::Domain(const char* filename)
+Domain::Domain(const char* filename, BoundaryManager& boundary_manager)
 {
 	std::ifstream input(filename);
 	if (input.is_open())
@@ -31,11 +31,13 @@ Domain::Domain(const char* filename)
 		input >> count;
 		this->mesh = std::vector<Mesh*>(count);
 		uint p1_id, p2_id;
+		uint cond_id;
 		for (i=0;i<count;++i)
 		{
-			input >> index >> index>> index >> index >>index >> p1_id >> p2_id;
-			this->mesh[i] = new Mesh(&(this->points[p1_id-1]), &(this->points[p2_id-1]));
-			std::cout <<"p1 : " << p1_id<< "\t p2 : " << p2_id <<std::endl;
+			input >> index >> index >> index >> cond_id >>index >> p1_id >> p2_id;
+			//std::cout << "cond_valeur " << boundary_manager.get_condition(cond_id).value << std::endl;
+			this->mesh[i] = new Mesh(&(this->points[p1_id-1]), &(this->points[p2_id-1]), boundary_manager.get_condition(cond_id));
+			//std::cout <<"p1 : " << p1_id<< "\t p2 : " << p2_id <<std::endl;
 		}
 	}
 	else

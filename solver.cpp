@@ -52,13 +52,14 @@ std::vector<double> solve(Domain& domega, Point* points)
 				g += integrate_w[k]*lambda_neumann(xk, pi);
 				h += integrate_w[k]*lambda_dirichlet(xk,pi,n);
 			}
-			std::cout << "hij = " << h <<std::endl;
-			std::cout << "gij = " << g <<std::endl;
+			//std::cout << "hij = " << h <<std::endl;
+			//std::cout << "gij = " << g <<std::endl;
 			if ((*it)->is_dirichlet()) // si l'inconnu est neumann
 			{
 				cond_type[i] = NEUMANN;
 				b[i] -= g*(*it)->get_dirichlet_cond();
 				M(i,j) = h;
+				M(i,j) /= 3.1417;
 				if (i == j)
 				{
 					--M(i,j);
@@ -69,8 +70,9 @@ std::vector<double> solve(Domain& domega, Point* points)
 				cond_type[i] = DIRICHLET;
 				b[i] -= h*(*it)->get_neumann_cond();
 				M(i,j) = g;
+				M(i,j) /= 3.1417;
 			}
-			M(i,j) /= 3.1417;
+			
 			++j;
 		}
 

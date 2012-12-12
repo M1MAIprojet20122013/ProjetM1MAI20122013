@@ -10,7 +10,7 @@
 class Mesh
 {
 public:
-	Mesh(const Point* point_1, const Point* point_2);
+	Mesh(const Point* point_1, const Point* point_2, const Condition& condition);
 	~Mesh();
 	// getter/setter
 	const Point& get_p1();
@@ -26,7 +26,6 @@ public:
 protected:
 	void load_center();
 	void load_normal();
-	void setCondition();
 	const Point* p1;
 	const Point* p2;
 	Point center;
