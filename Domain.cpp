@@ -1,4 +1,5 @@
 #include "./Domain.hpp"
+#include <iostream>
 
 Domain::Domain(const char* filename)
 {
@@ -30,14 +31,11 @@ Domain::Domain(const char* filename)
 		input >> count;
 		this->mesh = std::vector<Mesh*>(count);
 		uint p1_id, p2_id;
-		Condition c;
-		uint group_id; // identifie the bond
 		for (i=0;i<count;++i)
 		{
-			input >> index >> index >> index >> group_id;
-			input >> index >> p1_id >> p2_id;
-			
-			this->mesh[i] = new Mesh(&(this->points[p1_id-1]), &(this->points[p2_id-1]), &c);
+			input >> index >> index>> index >> index >>index >> p1_id >> p2_id;
+			this->mesh[i] = new Mesh(&(this->points[p1_id-1]), &(this->points[p2_id-1]));
+			std::cout <<"p1 : " << p1_id<< "\t p2 : " << p2_id <<std::endl;
 		}
 	}
 	else
