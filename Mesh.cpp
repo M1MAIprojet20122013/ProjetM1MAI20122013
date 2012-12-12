@@ -1,19 +1,9 @@
 #include "Mesh.hpp"
-
-Mesh::Mesh(const Point* point_1, const Point* point_2, Condition* cond) : p1(point_1), p2(point_2) 
+Mesh::Mesh(const Point* point_1, const Point* point_2) : p1(point_1), p2(point_2) 
 {
 	this->load_center();
 	this->load_normal();
-	if (cond->type == NEUMANN)
-	{
-		this->neumann_cond = new double(cond->value);
-		this->dirichlet_cond = NULL;
-	}
-	else
-	{
-		this->dirichlet_cond = new double(cond->value);
-		this->neumann_cond = NULL;
-	}
+	setCondition();
 }
 
 Mesh::~Mesh()
@@ -76,6 +66,7 @@ void Mesh::load_center()
 		(this->p1->y + this->p2->y)/2, 
 		(this->p1->z + this->p2->z)/2
 	);
+	
 }
 
 void Mesh::load_normal()
@@ -83,6 +74,25 @@ void Mesh::load_normal()
 	// différence finie dérivée seconde, puis normaliser.
 	Vector p1p2 = Point_sub(this->p2, this->p1);
 	double norm_p1p2 = norm(&p1p2);
-	this->normal.x = -(this->p2->y - this->p1->y) / norm_p1p2;
-	this->normal.y = (this->p2->x - this->p2->x) / norm_p1p2;
+	this->normal.x = (this->p2->y - this->p1->y) / norm_p1p2;
+	this->normal.y = -(this->p2->x - this->p1->x) / norm_p1p2;
+}
+
+void Mesh::setCondition(){
+	if (p1->x == 0 && p2->x == 0) {
+		dirichlet_cond = new double(100.0);
+		neumann_cond =  NULL;
+	}
+	if  (p1->x == 1 && p2->x == 1){
+		dirichlet_cond =  new double(101.0);
+		neumann_cond =  NULL;
+	}
+	if (p1->y == 0 && p2->y == 0) {
+		neumann_cond =  new double(0);
+		dirichlet_cond = NULL;
+	}
+	if  (p1->y == 1 && p2->y == 1){
+		neumann_cond =  new double(0);
+		dirichlet_cond = NULL;
+	}
 }

@@ -10,14 +10,14 @@
 class Mesh
 {
 public:
-	Mesh(const Point* point_1, const Point* point_2, Condition* cond);
+	Mesh(const Point* point_1, const Point* point_2);
 	~Mesh();
 	// getter/setter
 	const Point& get_p1();
 	const Point& get_p2();
-	const Point& get_center();	
+	const Point& get_center();
 	const Vector& get_normale();
-	
+
 	const bool is_neumann();
 	const bool is_dirichlet();
 
@@ -26,7 +26,7 @@ public:
 protected:
 	void load_center();
 	void load_normal();
-
+	void setCondition();
 	const Point* p1;
 	const Point* p2;
 	Point center;
