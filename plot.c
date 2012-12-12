@@ -12,7 +12,7 @@ void init_gnuplot()
 		printf("Initializing gnuplot [FAILED]\n");
 	}
 	else
-	{
+	{	fprintf(h_gnuplot, "unset key \n\n");
 		printf("Initializing gnuplot [  OK  ]\n");
 	}
 }
@@ -27,9 +27,9 @@ void plot_from(const char* filename, const char* options)
 	{
 		fprintf(h_gnuplot, "replot '");
 	}
-	fprintf(h_gnuplot, filename);
+	fprintf(h_gnuplot,"%s", filename);
 	fprintf(h_gnuplot, "' ");
-	fprintf(h_gnuplot, options);
+	fprintf(h_gnuplot,"%s", options);
 	fprintf(h_gnuplot, "\n\n");
 	fflush(h_gnuplot);
 }
@@ -55,7 +55,28 @@ void plot(const Point* points, uint length, const char* options)
 		++plot_id;
 	}
 }
-
+void plot_vector( const Point p1, const Point p2, const Vector normal, const char* options)
+{
+		char filename[15];
+	sprintf(filename, "/tmp/plot-%i", plot_id);
+	FILE* f = fopen(filename, "w");
+	if (f == NULL)
+	{
+		fprintf(stderr, "[ ERROR ] cannot save dataset to a temp file");
+	}
+	else
+	{
+		fprintf(f, "%f %f %f %f\n", (p1.x+p2.x)/2, (p1.y+p2.y)/2, normal.x,normal.y);
+		fclose(f);
+		fprintf(h_gnuplot, "replot '");
+		fprintf(h_gnuplot,"%s", filename);
+		fprintf(h_gnuplot, "' ");	
+		fprintf(h_gnuplot,"%s", options);
+		fprintf(h_gnuplot, "\n\n");
+		fflush(h_gnuplot);
+		++plot_id;
+	}
+}
 
 int close_gnuplot()
 {

@@ -4,7 +4,6 @@
 #include "commun.h"
 #include "solver.hpp"
 #include "Matrice.hpp"
-#include "BoundaryManager.hpp"
 
 #include <unistd.h>
 #include <iostream>
@@ -22,23 +21,25 @@ using namespace std;
 
 int main()
 {
-	BoundaryManager bm("./boundary_settings.conf");	
-	bm.get_condition(1);
-	
-	//~ Domain domega("../../../gmsh-2.6.2-svn-Linux/bin/toto.msh");
-	//~ domega.save("/tmp/domega.txt");
-	//~ init_gnuplot();
-	//~ Point points[3];
-	//~ for (Domain::const_mesh_iterator it=domega.begin_mesh();it != domega.end_mesh();++it)
-	//~ {
-	//~     points[0] = (*it)->get_p1();
-	//~     points[1] = (*it)->get_center();
-	//~     points[2] = (*it)->get_p2();
-	//~     plot(points, 3, "with linespoints");
-	//~ }
-	//~ close_gnuplot();
-	//~ solve(domega, NULL);
-	
+	Domain domega("carre.msh");
+	domega.save("domega.txt");
+	init_gnuplot();
+	Point points[3];
+	for (Domain::const_mesh_iterator it=domega.begin_mesh();it != domega.end_mesh();++it)
+	{
+	    points[0] = (*it)->get_p1();
+	    points[1] = (*it)->get_center();
+	    points[2] = (*it)->get_p2();
+	    plot(points, 3, "with linespoints");
+	    plot_vector((*it)->get_p1(),(*it)->get_p2(), (*it)->get_normale(),"using 1:2:3:4 with vectors head filled lt 2");
+	    // pour plot en 3D un vecteur:
+	    // splot 'file.dat' using 1:2:3:4:5:6 with vectors filled head lw 2
+	    ((*it)->is_dirichlet()) ? cout << "dirichlet = " << (*it)->get_dirichlet_cond() <<endl : cout << "neumann = " << (*it)->get_neumann_cond() <<endl; 
+	}
+	close_gnuplot();
+	std::vector<double> ret = solve(domega, NULL);
+	for(uint i =0;i<ret.size();++i)
+	  cout << i << "\t" <<  ret[i] << endl;
 	//~ uint n = 1000;
 	//~ Matrice m(n,n);
 	//~ double b[n];
